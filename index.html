@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chief James Nyanaro – Legacy</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      background: #f9f9f9;
+      color: #333;
+    }
+    header {
+      background: #2e3a59;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    section {
+      display: none;
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+    section.active {
+      display: block;
+    }
+    h2 {
+      color: #2e3a59;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .gallery figure {
+      background: #fff;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      text-align: center;
+    }
+    .gallery img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+    .tribute {
+      background-color: #f2f5f7;
+      border-left: 5px solid #2e3a59;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border-radius: 5px;
+    }
+    .timeline .entry {
+      border-left: 4px solid #2e3a59;
+      padding-left: 1rem;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .timeline .entry::before {
+      content: "•";
+      position: absolute;
+      left: -10px;
+      top: 0;
+      color: #2e3a59;
+      font-size: 1.5rem;
+    }
+    footer {
+      background: #2e3a59;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+    #admin-controls button, #admin-content button {
+      margin: 0.3rem;
+      background: #1f3a5b;
+      color: #fff;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #admin-controls button:hover, #admin-content button:hover {
+      background: #345678;
+    }
+    .admin-section {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #f5f5f5;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Retired Senior Chief James Nyanaro</h1>
+  <nav>
+    <a onclick="showSection('home')">Home</a>
+    <a onclick="showSection('biography')">Biography</a>
+    <a onclick="showSection('gallery')">Gallery</a>
+    <a onclick="showSection('tributes')">Tributes</a>
+    <a onclick="showSection('achievements')">Achievements</a>
+    <a onclick="showSection('video')">Video</a>
+    <a onclick="showSection('guestbook')">Guestbook</a>
+    <a onclick="showSection('admin')">Admin</a>
+  </nav>
+</header>
+
+<section id="home" class="active">
+  <h2>“The greatest among you will be your servant.” – Matthew 23:11</h2>
+  <p>Welcome to the legacy of Chief James Nyanaro — a man of vision, faith, and service to the people of North Mugirango and beyond.</p>
+</section>
+
+<section id="biography">
+  <h2>Biography</h2>
+  <div id="bio-content">
+    <p><strong>Early Life:</strong> ...</p>
+  </div>
+</section>
+
+<section id="gallery">
+  <h2>Gallery</h2>
+  <div class="gallery">
+    <figure><img src="images/chief-young.jpg" alt="Young Chief"><figcaption>Early Teaching Years</figcaption></figure>
+  </div>
+</section>
+
+<section id="tributes">
+  <h2>Tributes</h2>
+  <div class="tribute"><p>"A great leader and a loving father."</p></div>
+</section>
+
+<section id="achievements">
+  <h2>Achievements</h2>
+  <div id="achievements-content" class="timeline">
+    <div class="entry"><h3>1959 – Primary Education</h3><p>Passed KAPE exams.</p></div>
+  </div>
+</section>
+
+<section id="video">
+  <h2>Video Tribute</h2>
+  <iframe id="video-frame" width="560" height="315" src="https://www.youtube.com/embed/YourVideoID" frameborder="0" allowfullscreen></iframe>
+</section>
+
+<section id="guestbook">
+  <h2>Guestbook</h2>
+  <iframe id="guestbook-frame" src="https://docs.google.com/forms/d/e/YourFormLink/viewform?embedded=true" width="100%" height="600" frameborder="0">Loading…</iframe>
+</section>
+
+<section id="admin">
+  <div id="admin-login">
+    <h2>Admin Panel</h2>
+    <p>Enter password:</p>
+    <input type="password" id="admin-pass">
+    <button onclick="checkPassword()">Login</button>
+    <p id="admin-error" style="color:red;"></p>
+  </div>
+
+  <div id="admin-content" style="display:none;">
+    <h3>Welcome, Admin</h3>
+    <div id="admin-controls">
+      <button onclick="showEditSection('edit-biography')">Edit Biography</button>
+      <button onclick="showEditSection('edit-achievements')">Edit Achievements</button>
+      <button onclick="showEditSection('edit-video')">Manage Video</button>
+      <button onclick="showEditSection('edit-guestbook')">Manage Guestbook</button>
+    </div>
+    <div id="edit-biography" class="admin-section" style="display:none;">
+  <label for="bio-editor"><strong>Current Biography:</strong></label><br>
+  <textarea id="bio-editor" rows="15" style="width: 100%; font-family: monospace;"></textarea><br>
+  <button onclick="updateBiography()">Save Biography</button>
+</div>
+
+<div id="edit-achievements" class="admin-section" style="display:none;">
+  <label for="achievements-editor"><strong>Current Achievements:</strong></label><br>
+  <textarea id="achievements-editor" rows="12" style="width: 100%; font-family: monospace;"></textarea><br>
+  <button onclick="updateAchievements()">Save Achievements</button>
+</div>
+
+    <div id="edit-video" class="admin-section" style="display:none;">
+  <label for="video-url"><strong>Current YouTube Embed URL:</strong></label><br>
+  <input type="text" id="video-url" style="width: 100%; padding: 0.5rem;" placeholder="https://www.youtube.com/embed/..."><br>
+  <button onclick="updateVideo()">Update Video</button>
+</div>
+
+<div id="edit-guestbook" class="admin-section" style="display:none;">
+  <label for="guestbook-url"><strong>Current Google Form Embed URL:</strong></label><br>
+  <input type="text" id="guestbook-url" style="width: 100%; padding: 0.5rem;" placeholder="https://docs.google.com/forms/..."><br>
+  <button onclick="updateGuestbook()">Update Guestbook</button>
+</div>
+
+</section>
+
+<footer><p>© 2025 The Nyanaro Family. All rights reserved.</p></footer>
+
+<script>
+function showSection(id) {
+  document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+function checkPassword() {
+  if (document.getElementById("admin-pass").value === "nyanaro123") {
+    document.getElementById("admin-login").style.display = "none";
+    document.getElementById("admin-content").style.display = "block";
+  } else {
+    document.getElementById("admin-error").textContent = "Incorrect password.";
+  }
+}
+function logoutAdmin() {
+  document.getElementById("admin-content").style.display = "none";
+  document.getElementById("admin-login").style.display = "block";
+  document.getElementById("admin-pass").value = "";
+  document.getElementById("admin-error").textContent = "";
+}
+function updateBiography() {
+  const newBio = document.getElementById("bio-editor").value;
+  document.getElementById("bio-content").innerHTML = newBio.replace(/\n/g, "<br>");
+  localStorage.setItem("bioContent", newBio);
+}
+
+function updateAchievements() {
+  const newAchievements = document.getElementById("achievements-editor").value;
+  document.getElementById("achievements-content").innerHTML = newAchievements.replace(/\n/g, "<br>");
+  localStorage.setItem("achievementsContent", newAchievements);
+}
+
+function updateVideo() {
+  const videoURL = document.getElementById("video-url").value;
+  document.getElementById("video-frame").src = videoURL;
+  localStorage.setItem("videoURL", videoURL);
+}
+
+function updateGuestbook() {
+  const guestbookURL = document.getElementById("guestbook-url").value;
+  document.getElementById("guestbook-frame").src = guestbookURL;
+  localStorage.setItem("guestbookURL", guestbookURL);
+}
+
+function showEditSection(id) {
+  document.querySelectorAll(".admin-section").forEach(sec => sec.style.display = "none");
+  document.getElementById(id).style.display = "block";
+
+  if (id === 'edit-biography') {
+    const currentBio = document.getElementById("bio-content").innerHTML.trim();
+    document.getElementById("bio-editor").value = currentBio.replace(/<br\s*\/?>/gi, "\n");
+  }
+
+  if (id === 'edit-achievements') {
+    const currentAchievements = document.getElementById("achievements-content").innerHTML.trim();
+    document.getElementById("achievements-editor").value = currentAchievements.replace(/<br\s*\/?>/gi, "\n");
+  }
+
+  if (id === 'edit-video') {
+    const currentVideoURL = document.getElementById("video-frame").src;
+    document.getElementById("video-url").value = currentVideoURL;
+  }
+
+  if (id === 'edit-guestbook') {
+    const currentFormURL = document.getElementById("guestbook-frame").src;
+    document.getElementById("guestbook-url").value = currentFormURL;
+  }
+}
+
+
+document.addEventListener("DOMContentLoaded", () => showSection("home"));
+document.addEventListener("DOMContentLoaded", () => {
+  showSection("home");
+
+  if (localStorage.getItem("bioContent")) {
+    document.getElementById("bio-content").innerHTML = localStorage.getItem("bioContent").replace(/\n/g, "<br>");
+  }
+
+  if (localStorage.getItem("achievementsContent")) {
+    document.getElementById("achievements-content").innerHTML = localStorage.getItem("achievementsContent").replace(/\n/g, "<br>");
+  }
+
+  if (localStorage.getItem("videoURL")) {
+    document.getElementById("video-frame").src = localStorage.getItem("videoURL");
+  }
+
+  if (localStorage.getItem("guestbookURL")) {
+    document.getElementById("guestbook-frame").src = localStorage.getItem("guestbookURL");
+  }
+});
+
+</script>
+
+</body>
+</html>
