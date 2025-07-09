@@ -3,6 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Cropper.js CSS -->
+<link  href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+
+<!-- Cropper.js JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
   <title>Chief James Nyanaro – Legacy</title>
   <style>
     body {
@@ -104,12 +112,98 @@
       background: #f5f5f5;
       border-radius: 4px;
     }
+    .drag-handle {
+  cursor: grab;
+  font-size: 1.5rem;
+  color: #888;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+#sortable-gallery-admin .sortable-chosen {
+  background-color: #eef2fa;
+  border: 2px dashed #345678;
+}
+
+#sortable-gallery-admin .sortable-ghost {
+  opacity: 0.4;
+}
+#gallery-filters button {
+  margin: 0.3rem;
+  padding: 0.5rem 1rem;
+  background: #2e3a59;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#gallery-filters button:hover {
+  background: #3d4b6b;
+}
+#gallery-filters .active-filter {
+  background: #1f2c45;
+  font-weight: bold;
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
   </style>
 </head>
 <body>
+  <audio id="welcome-audio" autoplay loop>
+  <source src="audio/legacy-theme.mp3" type="audio/mp3">
+  Your browser does not support the audio element.
+</audio>
+
+<div id="welcome-popup" style="
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #2e3a59;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 1.5rem;
+  text-align: center;
+  z-index: 3000;
+  opacity: 0;
+  transition: opacity 1s ease;
+">
+  <div style="animation: fadeUp 1.5s ease-out;">
+    <p style="margin-bottom: 1rem; font-size: 1.3rem;">Welcome to the Legacy of <br><strong>Chief James Nyanaro</strong></p>
+    <p style="font-size: 1rem; font-style: italic; color: #dcdcdc; margin-bottom: 2rem;">
+      “The greatest among you will be your servant.” – Matthew 23:11
+    </p>
+    <button onclick="closeWelcomePopup()" style="
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      background: white;
+      color: #2e3a59;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    ">Enter Site</button>
+  </div>
+</div>
+
+
+
 
 <header>
   <h1>Retired Senior Chief James Nyanaro</h1>
+  <marquee>Welcome! .</marquee>
   <nav>
     <a onclick="showSection('home')">Home</a>
     <a onclick="showSection('biography')">Biography</a>
@@ -137,7 +231,10 @@
 <section id="gallery">
   <h2>Gallery</h2>
   <div class="gallery">
+    
     <figure><img src="images/chief-young.jpg" alt="Young Chief"><figcaption>Early Teaching Years</figcaption></figure>
+    <div id="gallery-filters" style="text-align: center; margin-bottom: 1rem;"></div>
+    <div class="gallery" id="gallery-display"></div>
   </div>
 </section>
 
@@ -179,6 +276,8 @@
       <button onclick="showEditSection('edit-achievements')">Edit Achievements</button>
       <button onclick="showEditSection('edit-video')">Manage Video</button>
       <button onclick="showEditSection('edit-guestbook')">Manage Guestbook</button>
+      <button onclick="showEditSection('manage-gallery')">Gallery Manager</button>
+
     </div>
     <div id="edit-biography" class="admin-section" style="display:none;">
   <label for="bio-editor"><strong>Current Biography:</strong></label><br>
@@ -203,10 +302,57 @@
   <input type="text" id="guestbook-url" style="width: 100%; padding: 0.5rem;" placeholder="https://docs.google.com/forms/..."><br>
   <button onclick="updateGuestbook()">Update Guestbook</button>
 </div>
+<button onclick="showEditSection('edit-gallery')">Manage Gallery</button>
+
+<div id="edit-gallery" class="admin-section" style="display:none;">
+  <label for="image-upload"><strong>Select Image:</strong></label><br>
+  <input type="file" id="image-upload" accept="image/*"><br><br>
+
+  <label for="image-caption"><strong>Image Caption:</strong></label><br>
+  <input type="text" id="image-caption" style="width: 100%; padding: 0.5rem;"><br><br>
+
+  <button onclick="addImageToGallery()">Add to Gallery</button>
+
+  <hr>
+  <h4>Current Images:</h4>
+  <div id="sortable-gallery-admin" class="gallery"></div>
+
+<div id="manage-gallery" class="admin-section" style="display: none;">
+  <h3>All Uploaded Images</h3>
+  <div id="admin-gallery-manager" class="gallery"></div>
+</div>
+
+</div>
 
 </section>
+<div id="cropper-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000000b0; z-index:1000; align-items:center; justify-content:center;">
+  <div style="background:white; padding:1rem; border-radius:8px; max-width:90%; max-height:90%;">
+    <h3>Crop Image</h3>
+    <img id="cropper-image" style="max-width:100%; max-height:500px;">
+    <div style="margin-top: 1rem; text-align:right;">
+      <button onclick="applyCrop()">Crop</button>
+      <button onclick="closeCropper()">Cancel</button>
+    </div>
+  </div>
+</div>
+<div id="admin-message" style="
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2e3a59;
+  color: white;
+  padding: 0.8rem 1.2rem;
+  border-radius: 6px;
+  font-weight: bold;
+  z-index: 2000;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+"></div>
 
+<marquee>Welcome! .</marquee>
 <footer><p>© 2025 The Nyanaro Family. All rights reserved.</p></footer>
+
 
 <script>
 function showSection(id) {
@@ -217,10 +363,13 @@ function checkPassword() {
   if (document.getElementById("admin-pass").value === "nyanaro123") {
     document.getElementById("admin-login").style.display = "none";
     document.getElementById("admin-content").style.display = "block";
+    renderAdminPreview(); // 👈 Add this line
   } else {
     document.getElementById("admin-error").textContent = "Incorrect password.";
   }
 }
+
+
 function logoutAdmin() {
   document.getElementById("admin-content").style.display = "none";
   document.getElementById("admin-login").style.display = "block";
@@ -274,8 +423,11 @@ function showEditSection(id) {
     const currentFormURL = document.getElementById("guestbook-frame").src;
     document.getElementById("guestbook-url").value = currentFormURL;
   }
+ 
+  if (id === 'manage-gallery') {
+  renderGalleryManager();
 }
-
+}
 
 document.addEventListener("DOMContentLoaded", () => showSection("home"));
 document.addEventListener("DOMContentLoaded", () => {
@@ -297,6 +449,284 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("guestbook-frame").src = localStorage.getItem("guestbookURL");
   }
 });
+function addImageToGallery() {
+  const fileInput = document.getElementById("image-upload");
+  const caption = document.getElementById("image-caption").value.trim();
+
+  if (fileInput.files.length === 0 || caption === "") {
+    alert("Please select an image and write a caption.");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const newImage = {
+      src: e.target.result,
+      caption: caption
+    };
+
+    let galleryData = JSON.parse(localStorage.getItem("galleryImages") || "[]");
+    galleryData.push(newImage);
+    localStorage.setItem("galleryImages", JSON.stringify(galleryData));
+
+    renderGallery();
+    renderAdminPreview();
+
+    // Clear inputs
+    fileInput.value = "";
+    document.getElementById("image-caption").value = "";
+  };
+  reader.readAsDataURL(fileInput.files[0]);
+}
+
+function renderGallery(activeCategory = "All") {
+  const galleryData = JSON.parse(localStorage.getItem("galleryImages") || "[]");
+
+  const gallery = document.getElementById("gallery-display");
+  const filters = document.getElementById("gallery-filters");
+
+  // Build unique category list
+  const categories = [...new Set(galleryData.map(img => img.category?.trim() || "Uncategorized"))];
+  filters.innerHTML = `<button onclick="renderGallery('All')" class="${activeCategory === 'All' ? 'active-filter' : ''}">All</button>`;
+  categories.forEach(cat => {
+    filters.innerHTML += `<button onclick="renderGallery('${cat}')" class="${activeCategory === cat ? 'active-filter' : ''}">${cat}</button>`;
+  });
+
+  // Clear gallery
+  gallery.innerHTML = "";
+
+  // Filter and display
+  const filteredImages = activeCategory === "All"
+    ? galleryData
+    : galleryData.filter(img => (img.category?.trim() || "Uncategorized") === activeCategory);
+
+  filteredImages.forEach(image => {
+    const fig = document.createElement("figure");
+    fig.innerHTML = `
+      <img src="${image.src}" alt="${image.caption}" style="width: ${image.size || 100}%;">
+      <figcaption>${image.caption}</figcaption>
+    `;
+    gallery.appendChild(fig);
+  });
+}
+
+
+function renderAdminPreview() {
+  const preview = document.getElementById("sortable-gallery-admin");
+
+  preview.innerHTML = "";
+
+  const galleryData = JSON.parse(localStorage.getItem("galleryImages") || "[]");
+
+  galleryData.forEach((image, index) => {
+    const fig = document.createElement("figure");
+  fig.setAttribute("data-index", index);
+
+   fig.innerHTML = `
+  <div class="drag-handle">≡</div>
+  <img src="${image.src}" alt="${image.caption}" style="max-width: 100%; height: auto;"><br>
+  <input type="text" id="caption-${index}" value="${image.caption}" style="width: 100%; margin: 0.3rem 0;">
+  <input type="text" id="category-${index}" value="${image.category || ''}" placeholder="Category (optional)" style="width: 100%; margin-bottom: 0.5rem;">
+  <label>Resize (%): <input type="number" id="size-${index}" value="${image.size || 100}" min="10" max="200" style="width: 60px;">%</label><br><br>
+  <input type="file" id="replace-${index}" accept="image/*"><br><br>
+  <button onclick="saveImageEdits(${index})">Save Changes</button>
+  <button onclick="deleteImage(${index})" style="background: #c62828;">Delete</button>
+`;
+
+
+
+    preview.appendChild(fig);
+  });
+ 
+}
+ initSortable();
+
+function saveImageEdits(index) {
+  let galleryData = JSON.parse(localStorage.getItem("galleryImages") || "[]");
+
+  const newCaption = document.getElementById(`caption-${index}`).value;
+  const newSize = parseInt(document.getElementById(`size-${index}`).value) || 100;
+  const fileInput = document.getElementById(`replace-${index}`);
+  const newCategory = document.getElementById(`category-${index}`).value;
+  galleryData[index].category = newCategory;
+
+  if (fileInput.files.length > 0) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      galleryData[index].src = e.target.result;
+      galleryData[index].caption = newCaption;
+      galleryData[index].size = newSize;
+      localStorage.setItem("galleryImages", JSON.stringify(galleryData));
+      renderGallery();
+      renderAdminPreview();
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+  } else {
+    galleryData[index].caption = newCaption;
+    galleryData[index].size = newSize;
+    localStorage.setItem("galleryImages", JSON.stringify(galleryData));
+    showMessage("Image uploaded to gallery.");
+
+    renderGallery();
+    renderAdminPreview();
+  }
+}
+
+
+
+function deleteImage(index) {
+  if (!confirm("Are you sure you want to delete this image?")) return;
+
+  let galleryData = JSON.parse(localStorage.getItem("galleryImages") || "[]");
+  galleryData.splice(index, 1);
+  localStorage.setItem("galleryImages", JSON.stringify(galleryData));
+ showMessage("Image deleted.");
+
+  renderGallery();
+  renderAdminPreview();
+}
+function initSortable() {
+  const container = document.getElementById('sortable-gallery-admin');
+  if (!container) return;
+
+  new Sortable(container, {
+    animation: 150,
+    handle: '.drag-handle',
+    onEnd: function () {
+      const items = Array.from(container.querySelectorAll('figure'));
+      const newOrder = items.map(fig => parseInt(fig.dataset.index));
+      let galleryData = JSON.parse(localStorage.getItem("galleryImages") || "[]");
+      galleryData = newOrder.map(i => galleryData[i]);
+      localStorage.setItem("galleryImages", JSON.stringify(galleryData));
+      renderGallery();
+      renderAdminPreview();
+    }
+  });
+}
+
+function renderGalleryManager() {
+  const manager = document.getElementById("admin-gallery-manager");
+  manager.innerHTML = "";
+
+  const galleryData = JSON.parse(localStorage.getItem("galleryImages") || "[]");
+
+  galleryData.forEach((image, index) => {
+    const fig = document.createElement("figure");
+    fig.innerHTML = `
+      <img src="${image.src}" id="crop-preview-${index}" alt="${image.caption}" style="max-width: 100%; height: auto;"><br>
+      <input type="text" id="edit-caption-${index}" value="${image.caption}" style="width: 100%; margin: 0.3rem 0;">
+      <input type="text" id="edit-category-${index}" value="${image.category || ''}" placeholder="Category (optional)" style="width: 100%; margin-bottom: 0.5rem;">
+      <label>Resize (%): <input type="number" id="edit-size-${index}" value="${image.size || 100}" min="10" max="200" style="width: 60px;"></label><br>
+      <button onclick="applyEdits(${index})">Save</button>
+      <button onclick="deleteImage(${index})" style="background: #c62828;">Delete</button>
+      <button onclick="cropImage(${index})">Crop</button>
+    `;
+    manager.appendChild(fig);
+  });
+}
+
+function applyEdits(index) {
+  let galleryData = JSON.parse(localStorage.getItem("galleryImages") || "[]");
+  galleryData[index].caption = document.getElementById(`edit-caption-${index}`).value;
+  galleryData[index].category = document.getElementById(`edit-category-${index}`).value;
+  galleryData[index].size = parseInt(document.getElementById(`edit-size-${index}`).value) || 100;
+  localStorage.setItem("galleryImages", JSON.stringify(galleryData));
+showMessage("Changes saved successfully.");
+
+  renderGallery();
+  renderAdminPreview();
+  renderGalleryManager();
+}
+let cropper;
+let cropIndex;
+
+function cropImage(index) {
+  cropIndex = index;
+  const imgData = JSON.parse(localStorage.getItem("galleryImages") || "[]")[index].src;
+  const imageElement = document.getElementById("cropper-image");
+  imageElement.src = imgData;
+
+  imageElement.onload = () => {
+    if (cropper) cropper.destroy();
+    cropper = new Cropper(imageElement, {
+      aspectRatio: NaN, // Free crop
+      viewMode: 1
+    });
+
+    document.getElementById("cropper-modal").style.display = "flex";
+  };
+}
+
+function applyCrop() {
+  if (!cropper) return;
+
+  const canvas = cropper.getCroppedCanvas();
+  const croppedData = canvas.toDataURL("image/png");
+
+  let galleryData = JSON.parse(localStorage.getItem("galleryImages") || "[]");
+  galleryData[cropIndex].src = croppedData;
+  localStorage.setItem("galleryImages", JSON.stringify(galleryData));
+ showMessage("Image cropped and updated.");
+
+  closeCropper();
+  renderGallery();
+  renderAdminPreview();
+  renderGalleryManager();
+}
+
+function closeCropper() {
+  if (cropper) {
+    cropper.destroy();
+    cropper = null;
+  }
+  document.getElementById("cropper-modal").style.display = "none";
+}
+function showMessage(text, duration = 3000) {
+  const box = document.getElementById("admin-message");
+  box.textContent = text;
+  box.style.display = "block";
+
+  setTimeout(() => {
+    box.style.display = "none";
+  }, duration);
+}
+document.addEventListener("DOMContentLoaded", () => {
+  showSection("home");
+  renderGallery();
+  renderAdminPreview(); // 👈 This ensures admin preview loads too
+});
+window.addEventListener("load", () => {
+  const popup = document.getElementById("welcome-popup");
+  setTimeout(() => {
+    popup.style.opacity = 0;
+    setTimeout(() => {
+      popup.style.display = "none";
+    }, 800);
+  }, 9000); // Popup stays for 5 seconds
+});
+window.addEventListener("load", () => {
+  const popup = document.getElementById("welcome-popup");
+  popup.style.opacity = 1;
+});
+
+function closeWelcomePopup() {
+  const popup = document.getElementById("welcome-popup");
+  popup.style.opacity = 0;
+  setTimeout(() => {
+    popup.style.display = "none";
+  }, 9000); // matches transition time
+}
+function closeWelcomePopup() {
+  const popup = document.getElementById("welcome-popup");
+  popup.style.opacity = 0;
+  setTimeout(() => {
+    popup.style.display = "none";
+  }, 1000);
+
+  // Stop audio
+  const audio = document.getElementById("welcome-audio");
+  if (audio) audio.pause();
+}
 
 </script>
 
