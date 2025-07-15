@@ -10,6 +10,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script>
+  UPLOADCARE_PUBLIC_KEY = '0670db5fb920e7c84fc3';
+</script>
+<script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+
 
   <title>Chief James Nyanaro – Legacy</title>
   <style>
@@ -210,6 +215,8 @@
     <a onclick="showSection('gallery')">Gallery</a>
     <a onclick="showSection('tributes')">Tributes</a>
     <a onclick="showSection('achievements')">Achievements</a>
+   <a onclick="showSection('full-history')">Full History</a>
+
     <a onclick="showSection('video')">Video</a>
     <a onclick="showSection('guestbook')">Guestbook</a>
     <a onclick="showSection('admin')">Admin</a>
@@ -258,6 +265,20 @@
 <section id="guestbook">
   <h2>Guestbook</h2>
   <iframe id="guestbook-frame" src="https://docs.google.com/forms/d/e/YourFormLink/viewform?embedded=true" width="100%" height="600" frameborder="0">Loading…</iframe>
+  <div id="guestbook-thankyou" style="
+  display: none;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #e0f7ea;
+  color: #2e7d32;
+  border-left: 5px solid #2e7d32;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+">
+  Thank you for signing the guestbook!
+</div>
+
 </section>
 
 <section id="admin">
@@ -277,6 +298,7 @@
       <button onclick="showEditSection('edit-video')">Manage Video</button>
       <button onclick="showEditSection('edit-guestbook')">Manage Guestbook</button>
       <button onclick="showEditSection('manage-gallery')">Gallery Manager</button>
+      <button onclick="showEditSection('edit-fullhistory')">Upload Full History PDF</button>
 
     </div>
     <div id="edit-biography" class="admin-section" style="display:none;">
@@ -312,6 +334,12 @@
   <input type="text" id="image-caption" style="width: 100%; padding: 0.5rem;"><br><br>
 
   <button onclick="addImageToGallery()">Add to Gallery</button>
+<div id="edit-fullhistory" class="admin-section" style="display: none;">
+  <h4>Upload Full History PDF</h4>
+  <input type="hidden" role="uploadcare-uploader" id="history-uploader" data-clearable />
+  <button id="trigger-history-upload">Click to Upload PDF</button>
+  <p id="history-upload-status"></p>
+</div>
 
   <hr>
   <h4>Current Images:</h4>
@@ -321,6 +349,7 @@
   <h3>All Uploaded Images</h3>
   <div id="admin-gallery-manager" class="gallery"></div>
 </div>
+
 
 </div>
 
@@ -349,6 +378,59 @@
   z-index: 2000;
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
 "></div>
+
+  
+
+</section>
+<section id="full-history">
+  <h2>Full History of Chief James Nyanaro Nyabaro</h2>
+
+  <p>Click below to download the complete PDF biography:</p>
+  <p>
+    📂 <a href="downloads/full-history-nyanaro.pdf" download target="_blank">
+      <strong>Download the Full PDF</strong>
+    </a>
+  </p>
+
+  <hr>
+
+  <h3>📖 Bible Reference</h3>
+  <blockquote>
+    <p><strong>Matthew 23:11</strong><br>
+    "The greatest among you will be your servant."</p>
+    <p>This verse fits beautifully because Chief Nyanaro's story is one of servant leadership — building schools, hospitals, churches, guiding people in governance and faith, and lifting his community with humility and love.</p>
+  </blockquote>
+
+  <h3>💠 Dedication</h3>
+  <p>This work is lovingly dedicated to Retired Senior Chief James Nyanaro — a father, a leader, a servant of the people, and a true hero of our time...</p>
+  <!-- You can expand with full dedication content -->
+
+  <h3>💠 Acknowledgment</h3>
+  <p>I wish to sincerely acknowledge and thank Retired Senior Chief James Nyanaro, whose rich life story, tireless service, and unwavering faith have been the heart and soul of this work...</p>
+  <!-- You can expand with full acknowledgment content -->
+
+  <h3>📑 Table of Contents</h3>
+  <ul>
+    <li>CHAPTER 1: Early Life</li>
+    <li>CHAPTER 2: Education</li>
+    <li>CHAPTER 3: Working as a Teacher and Church Leader</li>
+    <li>CHAPTER 4: Travel to Rome</li>
+    <li>CHAPTER 5: Marriage</li>
+    <li>CHAPTER 6: Chief Role and Achievements</li>
+    <li>CHAPTER 7: Retirement</li>
+    <li>CHAPTER 8: Appreciation</li>
+    <li>Summary of Achievements</li>
+    <li>Messages from Family & Community</li>
+    <li>Conclusion</li>
+  </ul>
+
+  <p style="margin-top:2rem;">
+    <strong>This is a legacy not just of a man, but of an entire people lifted by his vision and love.</strong>
+  </p>
+</section>
+
+</section>
+
 
 <marquee>Welcome! .</marquee>
 <footer><p>© 2025 The Nyanaro Family. All rights reserved.</p></footer>
@@ -693,8 +775,19 @@ function showMessage(text, duration = 3000) {
 document.addEventListener("DOMContentLoaded", () => {
   showSection("home");
   renderGallery();
-  renderAdminPreview(); // 👈 This ensures admin preview loads too
+  renderAdminPreview();
+
+  const storedPDF = localStorage.getItem("fullHistoryURL");
+  if (storedPDF) {
+    const downloadArea = document.getElementById("history-download-area");
+    downloadArea.innerHTML = `
+      <p>📂 <a href="${storedPDF}" target="_blank" download>
+        Click here to download the full history of Senior Chief James Nyanaro Nyabaro
+      </a></p>
+    `;
+  }
 });
+
 window.addEventListener("load", () => {
   const popup = document.getElementById("welcome-popup");
   setTimeout(() => {
@@ -727,6 +820,24 @@ function closeWelcomePopup() {
   const audio = document.getElementById("welcome-audio");
   if (audio) audio.pause();
 }
+document.getElementById("guestbook-frame").addEventListener("load", () => {
+  const iframe = document.getElementById("guestbook-frame");
+  const thankYouBox = document.getElementById("guestbook-thankyou");
+
+  try {
+    const currentURL = iframe.contentWindow.location.href;
+    if (currentURL.includes("formResponse")) {
+      thankYouBox.style.display = "block";
+    }
+  } catch (e) {
+    // Cross-origin protection may block direct access — fallback method:
+    const iframeSrc = iframe.src;
+    if (iframeSrc.includes("formResponse")) {
+      thankYouBox.style.display = "block";
+    }
+  }
+});
+
 
 </script>
 
