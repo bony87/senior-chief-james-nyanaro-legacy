@@ -952,6 +952,48 @@ function closeGuestbookModal() {
   const modal = document.getElementById("guestbook-modal");
   modal.style.display = "none";
 }
+function openUploadWidget() {
+  cloudinary.openUploadWidget({
+    cloudName: 'dqpibhdz6',
+    uploadPreset: 'nyanaro-gallery',
+    sources: ['local', 'url', 'camera'],
+    multiple: false,
+    cropping: false,
+    folder: 'nyanaro-gallery'
+  }, (error, result) => {
+    if (!error && result && result.event === "success") {
+      const imageUrl = result.info.secure_url;
+
+      const caption = document.getElementById("image-caption").value.trim();
+      const category = document.getElementById("image-category").value.trim();
+
+      if (!caption) {
+        alert("Please enter a caption.");
+        return;
+      }
+
+      const newImage = {
+        src: imageUrl,
+        caption: caption,
+        category: category
+      };
+
+      let galleryData = JSON.parse(localStorage.getItem("galleryImages") || "[]");
+      galleryData.push(newImage);
+      localStorage.setItem("galleryImages", JSON.stringify(galleryData));
+
+      renderGallery();
+      renderAdminPreview();
+
+      // ✅ Reset fields after upload
+      document.getElementById("image-caption").value = "";
+      document.getElementById("image-category").value = "";
+
+    } else if (error) {
+      alert("Upload failed: " + error.message);
+    }
+  });
+}
 
 </script>
 
