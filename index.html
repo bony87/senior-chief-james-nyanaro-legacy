@@ -293,11 +293,31 @@
       <button onclick="showEditSection('edit-biography')">Edit Biography</button>
       <button onclick="showEditSection('edit-achievements')">Edit Achievements</button>
       <button onclick="showEditSection('edit-video')">Manage Video</button>
-      <button onclick="showEditSection('edit-guestbook')">Manage Guestbook</button>
+      <button onclick="showEditSection('admin-guestbook-responses')">View Guestbook Responses</button>
+
       <button onclick="openUploadWidget()">Upload Image</button>
 
 
     </div>
+<!-- PLACE YOURS HERE -->
+<div class="admin-section" id="admin-guestbook-responses" style="display: none;">
+  <h3>📬 Guestbook Responses</h3>
+   <!-- 🔽 Download Button -->
+  <a href="https://docs.google.com/spreadsheets/d/1QbXJZNkJ_fs5DtLJukyK0_V_C8pXNgHqMBM8b90a9SA/export?format=xlsx" 
+     target="_blank" 
+     style="display: inline-block; margin-bottom: 1rem; padding: 0.6rem 1.2rem; background-color: #388e3c; color: white; border-radius: 5px; font-weight: bold; text-decoration: none;">
+    ⬇️ Download Responses (Excel)
+  </a>
+
+  <!-- 📊 Embedded Google Sheet -->
+  <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS2dMgxOZVPjelCKUGhje7_Ffq7U4BqGi3F7fcjCPqlQIp77opLG5kVbBcnI6yqVc05pQHnOxNGqf1Z/pubhtml?widget=true&amp;headers=false" 
+          width="100%" height="500" frameborder="0" style="border: 1px solid #ccc; border-radius: 6px;">
+  </iframe>
+
+
+" 
+          width="100%" height="500" frameborder="0" style="border: 1px solid #ccc; border-radius: 6px;"></iframe>
+</div>
     <div id="edit-biography" class="admin-section" style="display:none;">
   <label for="bio-editor"><strong>Current Biography:</strong></label><br>
   <textarea id="bio-editor" rows="15" style="width: 100%; font-family: monospace;"></textarea><br>
@@ -343,7 +363,6 @@
   <h3>All Uploaded Images</h3>
   <div id="admin-gallery-manager" class="gallery"></div>
 </div>
-
 
 </div>
 
@@ -485,7 +504,7 @@
     ">✖</button>
     
     <h2 style="color: #2e3a59; margin-top: 0;">📨 Leave a Message</h2>
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfY8YOURSAMPLELINK/viewform?embedded=true" width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScrh5q2KSX8i2DvHufnWovMEq-ApbWYpj8cQAMuesdfJMMQUw/viewform?embedded=true" width="640" height="688" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
   </div>
 </div>
 <button onclick="openGuestbookModal()" 
@@ -993,6 +1012,15 @@ function openUploadWidget() {
       alert("Upload failed: " + error.message);
     }
   });
+}
+function openGuestbookModal() {
+  const modal = document.getElementById("guestbook-modal");
+  modal.style.display = "flex";
+}
+
+function closeGuestbookModal() {
+  const modal = document.getElementById("guestbook-modal");
+  modal.style.display = "none";
 }
 
 </script>
