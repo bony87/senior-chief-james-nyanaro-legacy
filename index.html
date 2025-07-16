@@ -227,10 +227,13 @@
   <nav>
     <a onclick="showSection('home')">Home</a>
     <a onclick="showSection('biography')">Biography</a>
+    <a onclick="showSection('gallery')">Gallery</a>
     <a onclick="showSection('tributes')">Tributes</a>
     <a onclick="showSection('achievements')">Achievements</a>
-    <a onclick="showSection('full-history')">Full History</a>
+   <a onclick="showSection('full-history')">Full History</a>
+
     <a onclick="showSection('video')">Video</a>
+    <a onclick="showSection('guestbook')">Guestbook</a>
     <a onclick="showSection('admin')">Admin</a>
   </nav>
 </header>
@@ -385,11 +388,6 @@
          style="display: inline-block; padding: 0.7rem 1.2rem; background-color: #2e7d32; color: white; border-radius: 5px; text-decoration: none; font-weight: bold;">
          📥 Download Full History (PDF)
     </a>
-    <button onclick="showGuestbook()" 
-          style="padding: 0.7rem 1.2rem; background-color: #1976d2; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
-    📨 Leave a Message
-  </button>
-</div>
   </p>
 
     &nbsp;
@@ -462,36 +460,7 @@
     font-size: 1.2rem;
   ">❌</span>
 </div>
-<!-- Guestbook Modal -->
-<div id="guestbook-modal" style="
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 5000;
-  justify-content: center;
-  align-items: center;
-">
-  <div style="background: white; padding: 1.5rem; border-radius: 10px; width: 90%; max-width: 700px; position: relative;">
-    <button onclick="closeGuestbookModal()" style="
-      position: absolute;
-      top: 10px; right: 10px;
-      background: transparent;
-      border: none;
-      font-size: 1.5rem;
-      color: #555;
-      cursor: pointer;
-    ">✖</button>
-    
-    <h2 style="color: #2e3a59; margin-top: 0;">📨 Leave a Message</h2>
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfY8YOURSAMPLELINK/viewform?embedded=true" width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-  </div>
-</div>
-<button onclick="openGuestbookModal()" 
-        style="padding: 0.7rem 1.2rem; background-color: #1976d2; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
-  📨 Leave a Message
-</button>
+
 
 <marquee>Welcome! .</marquee>
 <footer><p>© 2025 The Nyanaro Family. All rights reserved.</p></footer>
@@ -511,7 +480,6 @@ function checkPassword() {
     document.getElementById("admin-error").textContent = "Incorrect password.";
   }
 }
-
 
 
 function logoutAdmin() {
@@ -939,18 +907,47 @@ document.getElementById("guestbook-frame").addEventListener("load", () => {
       popup.style.display = "none";
     }, 500); // Wait for fade-out to finish
   }
-function showGuestbook() {
-  showSection("guestbook");
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-function openGuestbookModal() {
-  const modal = document.getElementById("guestbook-modal");
-  modal.style.display = "flex";
-}
+function openUploadWidget() {
+  cloudinary.openUploadWidget({
+    cloudName: 'dqpibhdz6',
+    uploadPreset: 'nyanaro-gallery',
+    sources: ['local', 'url', 'camera'],
+    multiple: false,
+    cropping: false,
+    folder: 'nyanaro-gallery'
+  }, (error, result) => {
+    if (!error && result && result.event === "success") {
+      const imageUrl = result.info.secure_url;
 
-function closeGuestbookModal() {
-  const modal = document.getElementById("guestbook-modal");
-  modal.style.display = "none";
+      const caption = document.getElementById("image-caption").value.trim();
+      const category = document.getElementById("image-category").value.trim();
+
+      if (!caption) {
+        alert("Please enter a caption.");
+        return;
+      }
+
+      const newImage = {
+        src: imageUrl,
+        caption: caption,
+        category: category
+      };
+
+      let galleryData = JSON.parse(localStorage.getItem("galleryImages") || "[]");
+      galleryData.push(newImage);
+      localStorage.setItem("galleryImages", JSON.stringify(galleryData));
+
+      renderGallery();
+      renderAdminPreview();
+
+      // ✅ Reset fields after upload
+      document.getElementById("image-caption").value = "";
+      document.getElementById("image-category").value = "";
+
+    } else if (error) {
+      alert("Upload failed: " + error.message);
+    }
+  });
 }
 
 </script>
