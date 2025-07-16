@@ -10,10 +10,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-<script>
-  UPLOADCARE_PUBLIC_KEY = '0670db5fb920e7c84fc3';
-</script>
-<script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+
+<script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
+
 
 
   <title>Chief James Nyanaro – Legacy</title>
@@ -160,6 +159,22 @@
   }
 }
 
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-content, #printable-content * {
+    visibility: visible;
+  }
+  #printable-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}
+
+
   </style>
 </head>
 <body>
@@ -212,13 +227,10 @@
   <nav>
     <a onclick="showSection('home')">Home</a>
     <a onclick="showSection('biography')">Biography</a>
-    <a onclick="showSection('gallery')">Gallery</a>
     <a onclick="showSection('tributes')">Tributes</a>
     <a onclick="showSection('achievements')">Achievements</a>
-   <a onclick="showSection('full-history')">Full History</a>
-
+    <a onclick="showSection('full-history')">Full History</a>
     <a onclick="showSection('video')">Video</a>
-    <a onclick="showSection('guestbook')">Guestbook</a>
     <a onclick="showSection('admin')">Admin</a>
   </nav>
 </header>
@@ -262,22 +274,7 @@
   <iframe id="video-frame" width="560" height="315" src="https://www.youtube.com/embed/YourVideoID" frameborder="0" allowfullscreen></iframe>
 </section>
 
-<section id="guestbook">
-  <h2>Guestbook</h2>
-  <iframe id="guestbook-frame" src="https://docs.google.com/forms/d/e/YourFormLink/viewform?embedded=true" width="100%" height="600" frameborder="0">Loading…</iframe>
-  <div id="guestbook-thankyou" style="
-  display: none;
-  margin-top: 1rem;
-  padding: 1rem;
-  background: #e0f7ea;
-  color: #2e7d32;
-  border-left: 5px solid #2e7d32;
-  border-radius: 5px;
-  font-weight: bold;
-  text-align: center;
-">
-  Thank you for signing the guestbook!
-</div>
+
 
 </section>
 
@@ -297,8 +294,8 @@
       <button onclick="showEditSection('edit-achievements')">Edit Achievements</button>
       <button onclick="showEditSection('edit-video')">Manage Video</button>
       <button onclick="showEditSection('edit-guestbook')">Manage Guestbook</button>
-      <button onclick="showEditSection('manage-gallery')">Gallery Manager</button>
-      <button onclick="showEditSection('edit-fullhistory')">Upload Full History PDF</button>
+      <button onclick="openUploadWidget()">Upload Image</button>
+
 
     </div>
     <div id="edit-biography" class="admin-section" style="display:none;">
@@ -319,19 +316,16 @@
   <button onclick="updateVideo()">Update Video</button>
 </div>
 
-<div id="edit-guestbook" class="admin-section" style="display:none;">
-  <label for="guestbook-url"><strong>Current Google Form Embed URL:</strong></label><br>
-  <input type="text" id="guestbook-url" style="width: 100%; padding: 0.5rem;" placeholder="https://docs.google.com/forms/..."><br>
-  <button onclick="updateGuestbook()">Update Guestbook</button>
-</div>
-<button onclick="showEditSection('edit-gallery')">Manage Gallery</button>
 
 <div id="edit-gallery" class="admin-section" style="display:none;">
   <label for="image-upload"><strong>Select Image:</strong></label><br>
-  <input type="file" id="image-upload" accept="image/*"><br><br>
+ <button onclick="openUploadWidget()">Upload Image</button><br><br>
+
 
   <label for="image-caption"><strong>Image Caption:</strong></label><br>
   <input type="text" id="image-caption" style="width: 100%; padding: 0.5rem;"><br><br>
+  <label for="image-category"><strong>Category (optional):</strong></label><br>
+  <input type="text" id="image-category" style="width: 100%; padding: 0.5rem;"><br><br>
 
   <button onclick="addImageToGallery()">Add to Gallery</button>
 <div id="edit-fullhistory" class="admin-section" style="display: none;">
@@ -380,57 +374,124 @@
 "></div>
 
   
-
-</section>
 <section id="full-history">
   <h2>Full History of Chief James Nyanaro Nyabaro</h2>
 
-  <p>Click below to download the complete PDF biography:</p>
   <p>
-    📂 <a href="downloads/full-history-nyanaro.pdf" download target="_blank">
-      <strong>Download the Full PDF</strong>
+    📂 <a href="https://github.com/bony87/senior-chief-james-nyanaro-legacy/blob/main/RETIRED SENIOR CHIEF JAMES NYANARO!.pdf?raw=true" 
+         download 
+         target="_blank" 
+         onclick="showDownloadMessage()"
+         style="display: inline-block; padding: 0.7rem 1.2rem; background-color: #2e7d32; color: white; border-radius: 5px; text-decoration: none; font-weight: bold;">
+         📥 Download Full History (PDF)
     </a>
+    <button onclick="showGuestbook()" 
+          style="padding: 0.7rem 1.2rem; background-color: #1976d2; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+    📨 Leave a Message
+  </button>
+</div>
   </p>
 
-  <hr>
+    &nbsp;
+    <button onclick="window.print()" 
+            style="padding: 0.8rem 1.5rem; background-color: #455a64; color: white; font-weight: bold; border: none; border-radius: 6px; cursor: pointer;">
+      🖨️ Print This Page
+    </button>
+  </div>
 
-  <h3>📖 Bible Reference</h3>
-  <blockquote>
-    <p><strong>Matthew 23:11</strong><br>
-    "The greatest among you will be your servant."</p>
-    <p>This verse fits beautifully because Chief Nyanaro's story is one of servant leadership — building schools, hospitals, churches, guiding people in governance and faith, and lifting his community with humility and love.</p>
-  </blockquote>
 
-  <h3>💠 Dedication</h3>
-  <p>This work is lovingly dedicated to Retired Senior Chief James Nyanaro — a father, a leader, a servant of the people, and a true hero of our time...</p>
-  <!-- You can expand with full dedication content -->
+  
+  <hr style="margin: 2rem 0;">
 
-  <h3>💠 Acknowledgment</h3>
-  <p>I wish to sincerely acknowledge and thank Retired Senior Chief James Nyanaro, whose rich life story, tireless service, and unwavering faith have been the heart and soul of this work...</p>
-  <!-- You can expand with full acknowledgment content -->
+  <article style="line-height: 1.8; font-size: 1rem; color: #333; max-width: 800px; margin: auto;">
+    <h3>Dedication</h3>
+    <p>
+      This work is lovingly dedicated to Retired Senior Chief James Nyanaro — a father, a leader, a servant of the people, and a true hero of our time.
+      From the humblest beginnings in the hills of North Mugirango, he rose to greatness through faith, courage, and unrelenting hard work...
+    </p>
 
-  <h3>📑 Table of Contents</h3>
-  <ul>
-    <li>CHAPTER 1: Early Life</li>
-    <li>CHAPTER 2: Education</li>
-    <li>CHAPTER 3: Working as a Teacher and Church Leader</li>
-    <li>CHAPTER 4: Travel to Rome</li>
-    <li>CHAPTER 5: Marriage</li>
-    <li>CHAPTER 6: Chief Role and Achievements</li>
-    <li>CHAPTER 7: Retirement</li>
-    <li>CHAPTER 8: Appreciation</li>
-    <li>Summary of Achievements</li>
-    <li>Messages from Family & Community</li>
-    <li>Conclusion</li>
-  </ul>
+    <h3>Acknowledgment</h3>
+    <p>
+      We sincerely thank Chief James Nyanaro for his service, and his family — especially his wife Mary Bochaberi and their children: Mercylyne Moraa, Stella Mosinya, Kevin Bundi, Jane Kwamboka, Robert Kebaso, Pius Chelluget, Lillian Bosibori, Collette Kerubo, and Geoffrey Samusi...
+    </p>
 
-  <p style="margin-top:2rem;">
-    <strong>This is a legacy not just of a man, but of an entire people lifted by his vision and love.</strong>
-  </p>
+    <h3>Bible Reference</h3>
+    <blockquote style="border-left: 4px solid #2e7d32; padding-left: 1rem; color: #555; font-style: italic;">
+      "The greatest among you will be your servant." – Matthew 23:11
+    </blockquote>
+
+    <h3>Summary of Achievements</h3>
+    <ul>
+      <li>Built schools, hospitals, and churches</li>
+      <li>Served faithfully as a chief in North Mugirango</li>
+      <li>Guided generations with wisdom, humility, and strength</li>
+      <li>Left behind a lasting legacy of faith, education, and peace</li>
+    </ul>
+
+    <h3>Messages from Family & Community</h3>
+    <p>Children, grandchildren, and local leaders share personal stories, admiration, and gratitude for a life of service that touched many hearts.</p>
+
+    <p style="margin-top: 2rem; font-weight: bold; text-align: center;">This is only a preview. For the full story, please download the PDF above.</p>
+  </article>
 </section>
-
-</section>
-
+<!-- Floating Download Message Popup -->
+<div id="download-popup" style="
+  display: none;
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #2e7d32;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 9999;
+  text-align: center;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+">
+  ✅ Download starting… Thank you for honoring Chief James Nyanaro.
+  <span onclick="closeDownloadPopup()" style="
+    margin-left: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    color: #ffcdd2;
+    font-size: 1.2rem;
+  ">❌</span>
+</div>
+<!-- Guestbook Modal -->
+<div id="guestbook-modal" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 5000;
+  justify-content: center;
+  align-items: center;
+">
+  <div style="background: white; padding: 1.5rem; border-radius: 10px; width: 90%; max-width: 700px; position: relative;">
+    <button onclick="closeGuestbookModal()" style="
+      position: absolute;
+      top: 10px; right: 10px;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: #555;
+      cursor: pointer;
+    ">✖</button>
+    
+    <h2 style="color: #2e3a59; margin-top: 0;">📨 Leave a Message</h2>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfY8YOURSAMPLELINK/viewform?embedded=true" width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+  </div>
+</div>
+<button onclick="openGuestbookModal()" 
+        style="padding: 0.7rem 1.2rem; background-color: #1976d2; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+  📨 Leave a Message
+</button>
 
 <marquee>Welcome! .</marquee>
 <footer><p>© 2025 The Nyanaro Family. All rights reserved.</p></footer>
@@ -450,6 +511,7 @@ function checkPassword() {
     document.getElementById("admin-error").textContent = "Incorrect password.";
   }
 }
+
 
 
 function logoutAdmin() {
@@ -567,31 +629,39 @@ function renderGallery(activeCategory = "All") {
   const gallery = document.getElementById("gallery-display");
   const filters = document.getElementById("gallery-filters");
 
-  // Build unique category list
-  const categories = [...new Set(galleryData.map(img => img.category?.trim() || "Uncategorized"))];
-  filters.innerHTML = `<button onclick="renderGallery('All')" class="${activeCategory === 'All' ? 'active-filter' : ''}">All</button>`;
+  // Create a unique category list including All
+  const categories = ["All", ...new Set(galleryData.map(img => img.category?.trim() || "Uncategorized"))];
+
+  // Build buttons for each category
+  filters.innerHTML = "";
   categories.forEach(cat => {
-    filters.innerHTML += `<button onclick="renderGallery('${cat}')" class="${activeCategory === cat ? 'active-filter' : ''}">${cat}</button>`;
+    const button = document.createElement("button");
+    button.textContent = cat;
+    button.className = (cat === activeCategory) ? "active-filter" : "";
+    button.onclick = () => renderGallery(cat);
+    filters.appendChild(button);
   });
 
-  // Clear gallery
+  // Clear and populate gallery
   gallery.innerHTML = "";
 
-  // Filter and display
-  const filteredImages = activeCategory === "All"
+  const filteredImages = (activeCategory === "All")
     ? galleryData
     : galleryData.filter(img => (img.category?.trim() || "Uncategorized") === activeCategory);
+
+  if (filteredImages.length === 0) {
+    gallery.innerHTML = `<p style="text-align:center; font-style:italic; color:gray;">No images in this category.</p>`;
+  }
 
   filteredImages.forEach(image => {
     const fig = document.createElement("figure");
     fig.innerHTML = `
-      <img src="${image.src}" alt="${image.caption}" style="width: ${image.size || 100}%;">
+      <img src="${image.src}" alt="${image.caption}" style="width: ${image.size || 100}%; border-radius: 6px;">
       <figcaption>${image.caption}</figcaption>
     `;
     gallery.appendChild(fig);
   });
 }
-
 
 function renderAdminPreview() {
   const preview = document.getElementById("sortable-gallery-admin");
@@ -838,6 +908,50 @@ document.getElementById("guestbook-frame").addEventListener("load", () => {
   }
 });
 
+  function toggleFullHistory() {
+    const details = document.getElementById("full-history-details");
+    const isHidden = details.style.display === "none";
+    details.style.display = isHidden ? "block" : "none";
+
+    // Optionally change button text too
+    const button = event.currentTarget;
+    button.textContent = isHidden ? "📖 Hide Full History Details" : "📖 Show Full History Details";
+  }
+
+  function showDownloadMessage() {
+    const popup = document.getElementById("download-popup");
+    popup.style.display = "block";
+    // Allow fade-in
+    setTimeout(() => {
+      popup.style.opacity = 1;
+    }, 10);
+
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+      closeDownloadPopup();
+    }, 5000);
+  }
+
+  function closeDownloadPopup() {
+    const popup = document.getElementById("download-popup");
+    popup.style.opacity = 0;
+    setTimeout(() => {
+      popup.style.display = "none";
+    }, 500); // Wait for fade-out to finish
+  }
+function showGuestbook() {
+  showSection("guestbook");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function openGuestbookModal() {
+  const modal = document.getElementById("guestbook-modal");
+  modal.style.display = "flex";
+}
+
+function closeGuestbookModal() {
+  const modal = document.getElementById("guestbook-modal");
+  modal.style.display = "none";
+}
 
 </script>
 
