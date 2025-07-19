@@ -12,15 +12,48 @@
   <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
 
   <!-- Internal Styles -->
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f4f6f9;
-      color: #2c3e50;
-      line-height: 1.7;
-    }
+   <style>
+  body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #2c3e50;
+  line-height: 1.7;
+  position: relative;
+  overflow-x: hidden;
+  background: none;
+}
+
+/* FULLSCREEN Animated Background Image */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://github.com/bony87/nyanaro-assets/blob/main/main.jpg?raw=true') no-repeat center center;
+  background-size: cover;
+  opacity: 0.25;
+  z-index: -1;
+  animation: zoomEffect 30s ease-in-out infinite alternate;
+}
+
+/* REMOVE white overlay */
+body::after {
+  content: none;
+}
+
+/* Smooth Zoom Animation */
+@keyframes zoomEffect {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
 
     header {
       background: linear-gradient(to right, #2e3a59, #1f2c45);
@@ -353,11 +386,107 @@
   color: #2c3e50;
   font-size: 1.2em;
 }
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 15px;
+  padding: 20px;
+}
+
+.gallery-grid img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+.gallery-single {
+  text-align: center;
+  padding: 30px;
+}
+
+.gallery-single img {
+  width: 60%;
+  max-width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  animation: slowZoom 20s ease-in-out infinite alternate;
+  transition: transform 1s ease;
+}
+
+.gallery-single p {
+  font-size: 1.1rem;
+  margin-top: 15px;
+  color: #333;
+}
+
+@keyframes slowZoom {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.gallery-item {
+  text-align: center;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  animation: slowZoom 20s ease-in-out infinite alternate;
+  cursor: pointer;
+}
+
+.gallery-item p {
+  font-size: 1rem;
+  margin-top: 10px;
+  color: #444;
+}
 
 
   </style>
 </head>
 <body>
+<button onclick="showSection('home')" 
+        style="position: fixed; bottom: 20px; right: 20px; background-color: #2e3a59; color: white; border: none; padding: 0.8rem 1.2rem; border-radius: 8px; font-weight: bold; z-index: 999;">
+  🔙 Back to Home
+</button>
+<div style="
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: -1;">
+</div>
+<div style="
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #2e3a59;
+  color: white;
+  padding: 0.5rem 0;
+  font-weight: bold;
+  font-size: 1rem;
+  z-index: 1000;
+">
+  <marquee behavior="scroll" direction="left" scrollamount="4">
+    This is a history of Retired Senior Chief James Nyanaro — a man whose life embodied service, leadership, and love.
+    From building schools and hospitals to guiding his community with wisdom, he left behind a legacy that continues to inspire.
+  </marquee>
+</div>
+
   <!-- Page Loader -->
   <div id="page-loader">
     <div class="spinner"></div>
@@ -419,9 +548,12 @@
       <a onclick="simulatePageLoad(() => showSection('achievements'))">🏅 Achievements</a>
       <a onclick="simulatePageLoad(() => showSection('full-history'))">📜 Full History</a>
       <a onclick="simulatePageLoad(() => showSection('tributes'))">💬 Tributes</a>
+      <a onclick="simulatePageLoad(() => showSection('attributes'))">💫 Attributes</a>
+      <a onclick="simulatePageLoad(() => showSection('gallery'))">💫 Gallery</a>
       <a onclick="simulatePageLoad(() => showSection('video'))">🎥 Video</a>
       <a onclick="simulatePageLoad(() => showSection('guestbook'))">🖊 Guestbook</a>
       <a onclick="simulatePageLoad(() => showSection('admin'))">🔒 Admin</a>
+
     </nav>
   </header>
   <!-- Main Content Sections -->
@@ -438,24 +570,78 @@
     </div>
   </section>
 
-  <section id="gallery">
-    <h2>Gallery</h2>
-    <div class="gallery">
-      <figure>
-        <img src="images/chief-young.jpg" alt="Young Chief">
-        <figcaption>Early Teaching Years</figcaption>
-      </figure>
-      <div id="gallery-filters" style="text-align: center; margin-bottom: 1rem;"></div>
-      <div class="gallery" id="gallery-display"></div>
+  
+<section id="gallery">
+  <h2>📸 Photo Gallery</h2>
+   <p style="text-align: center; font-size: 1rem; color: #555;">
+    👉 <em>Click on any image to view it in full size or download it.</em>
+  </p>
+  <div class="gallery-grid">
+
+    <div class="gallery-item">
+      <a href="https://github.com/bony87/nyanaro-assets/blob/main/OUR%20HERO%20SENOUR%20CHIEF%20JAMES%20NYANARO%20NYABARO.jpg?raw=true" target="_blank" download>
+        <img src="https://github.com/bony87/nyanaro-assets/blob/main/OUR%20HERO%20SENOUR%20CHIEF%20JAMES%20NYANARO%20NYABARO.jpg?raw=true" alt="Chief Nyanaro">
+      </a>
+      <p><strong>Senior Chief James Nyanaro Nyabaro</strong> – A visionary leader, devoted father, and cultural builder whose contributions continue to shape the lives of many.</p>
     </div>
-  </section>
+
+    <div class="gallery-item">
+      <a href="https://github.com/bony87/nyanaro-assets/blob/main/RETIRED%20CHIEF%20WITH%20THE%20PARISH%20PRIEST%20FR.%20OBAIGWA%20DURING%2060%20YEARS%20OF%20MARRIAGE%20CEREMONY.jpg?raw=true" target="_blank" download>
+        <img src="https://github.com/bony87/nyanaro-assets/blob/main/RETIRED%20CHIEF%20WITH%20THE%20PARISH%20PRIEST%20FR.%20OBAIGWA%20DURING%2060%20YEARS%20OF%20MARRIAGE%20CEREMONY.jpg?raw=true" alt="Family Celebration">
+      </a>
+      <p>"Retired Chief James Nyanaro with Parish Priest Fr. Obaigwa during his 60th wedding anniversary celebration.".</p>
+    </div>
+
+    <div class="gallery-item">
+      <a href="https://github.com/bony87/nyanaro-assets/blob/main/RETIRED%20CHIEF'S%20WIFE%20WITH%20HER%20SMILING%20FACE.jpg?raw=true" target="_blank" download>
+        <img src="https://github.com/bony87/nyanaro-assets/blob/main/RETIRED%20CHIEF'S%20WIFE%20WITH%20HER%20SMILING%20FACE.jpg?raw=true" alt="School Visit">
+      </a>
+      <p>"Mrs. Mary Bochaberi Nyanaro, radiating joy with her warm and loving smile.".</p>
+    </div>
+
+  </div>
+</section>
+
 
   <section id="tributes">
-    <h2>Tributes</h2>
-    <div class="tribute">
-      <p>"A great leader and a loving father."</p>
-    </div>
-  </section>
+  <h2>🌹 Living Tributes to Chief James Nyanaro</h2>
+
+  <div class="tribute">
+    <p>“Baba has been a pillar in our lives, not only as a father but as a builder of futures. His wisdom has shaped our values and our purpose.”<br><em>– Pius Nyanaro (Son, Assistant Chief)</em></p>
+  </div>
+
+  <div class="tribute">
+    <p>“He raised us with discipline, faith, and purpose. He showed us that leadership starts at home.”<br><em>–all His children </em></p>
+  </div>
+
+  <div class="tribute">
+    <p>“He showed unwavering commitment to our church, and his service has touched thousands of lives. A true shepherd of both faith and people.”<br><em>– Parish Leader, Nyanchoka Catholic Church</em></p>
+  </div>
+
+  <div class="tribute">
+    <p>“He is not just a chief. He is our father, our builder, our friend. Every road, clinic, and school reminds us of his tireless work.”<br><em>– Resident of Ekerenyo</em></p>
+  </div>
+
+  <div class="tribute">
+    <p>“Chief Nyanaro is the reason I went to school. He fought for education, especially for girls. I owe him my career.”<br><em>– Former Student, Kiabonyoru</em></p>
+  </div>
+
+</section>
+
+
+<section id="attributes">
+  <h2>💫 Defining Attributes of Chief James Nyanaro</h2>
+  <ul style="line-height: 2; font-size: 1.1rem;">
+    <li><strong>Servant Leader:</strong> Led with humility, guided by faith and service to others.</li>
+    <li><strong>Visionary Educator:</strong> Built and expanded schools, inspired lifelong learning.</li>
+    <li><strong>Community Developer:</strong> Spearheaded health, road, and church projects.</li>
+    <li><strong>Cultural Guardian:</strong> Co-founded the Gusii Cultural Council to preserve heritage.</li>
+    <li><strong>Spiritual Shepherd:</strong> Parish council chair, led faith-based missions including Rome pilgrimage.</li>
+    <li><strong>Family Patriarch:</strong> Guided his 9 children and many grandchildren with wisdom and love.</li>
+    <li><strong>Trusted Elder:</strong> Continued serving post-retirement as an advisor and role model.</li>
+    <li><strong>Nationally Honored:</strong> Presidential recognition and awards for exceptional service.</li>
+  </ul>
+</section>
 
   <section id="achievements">
     <h2>Achievements</h2>
@@ -482,6 +668,7 @@
 
     <div id="admin-content" style="display:none;">
       <h3>Welcome, Admin</h3>
+      <button onclick="logoutAdmin()" style="background-color: #d32f2f; margin-top: 1rem;">🚪 Logout</button>
       <div id="admin-controls">
         <button onclick="showEditSection('edit-biography')">Edit Biography</button>
         <button onclick="showEditSection('edit-achievements')">Edit Achievements</button>
@@ -519,6 +706,8 @@
            class="download-button">⬇️ Download Responses (Excel)</a>
         <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS2dMgxOZVPjelCKUGhje7_Ffq7U4BqGi3F7fcjCPqlQIp77opLG5kVbBcnI6yqVc05pQHnOxNGqf1Z/pubhtml?widget=true&amp;headers=false" 
                 width="100%" height="500" frameborder="0" style="border: 1px solid #ccc; border-radius: 6px;"></iframe>
+                
+
       </div>
     </div>
   </section>
@@ -619,6 +808,16 @@
       
       <h2 style="color: #2e3a59; margin-top: 0;">📨 Leave a Message</h2>
       <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScrh5q2KSX8i2DvHufnWovMEq-ApbWYpj8cQAMuesdfJMMQUw/viewform?embedded=true" width="640" height="688" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+      <button onclick="closeGuestbookModal()" style="
+  margin-top: 1rem;
+  background-color: #2e3a59;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+">🔙 Back to Site</button>
     </div>
   </div>
 
@@ -628,10 +827,6 @@
     📨 Leave a Message
   </button>
 
-  <!-- Marquee Text -->
-  <div class="marquee-container">
-    <p class="marquee-text">👑 Honoring the Legacy of Senior Chief James Nyanaro Nyabaro – A Life of Service, Honor, and Wisdom 👑</p>
-  </div>
 
   <!-- Footer -->
   <footer>
