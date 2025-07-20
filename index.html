@@ -1234,25 +1234,20 @@ Through Emmah, the legacy is not only remembered — it is written, shared, and 
       document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
       document.getElementById(id).classList.add("active");
       
-   // Hide welcome when leaving home
-  if (welcome) {
-    welcome.style.display = "none";
-    welcome.classList.remove("fade-in");
-  }
+    // Show and animate Home welcome message
+  if (id === "home") {
+    const welcome = document.getElementById("home-welcome");
+    if (welcome) {
+      welcome.style.display = "block";
+      welcome.classList.add("fade-in");
 
-  // Show welcome only when coming to home
-  if (id === "home" && welcome) {
-    welcome.style.display = "block";
-    welcome.classList.add("fade-in");
-
-    // Optional: remove animation class after it plays
-    setTimeout(() => {
-      welcome.classList.remove("fade-in");
-    }, 1500);
+      // Optional: remove the class after animation to allow it again next time
+      setTimeout(() => {
+        welcome.classList.remove("fade-in");
+      }, 1500);
+    }
   }
 }
-
-
 
 
 
