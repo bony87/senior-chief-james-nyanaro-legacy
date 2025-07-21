@@ -1232,31 +1232,52 @@ Through Emmah, the legacy is not only remembered — it is written, shared, and 
     justify-content: center;
     align-items: center;
   ">
-    <div style="background: white; padding: 1.5rem; border-radius: 10px; width: 90%; max-width: 700px; position: relative;">
-      <button onclick="closeGuestbookModal()" style="
-        position: absolute;
-        top: 10px; right: 10px;
-        background: transparent;
-        border: none;
-        font-size: 1.5rem;
-        color: #555;
-        cursor: pointer;
-      ">✖</button>
+    
       
-      <h2 style="color: #2e3a59; margin-top: 0;">📨 Leave a Message</h2>
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScrh5q2KSX8i2DvHufnWovMEq-ApbWYpj8cQAMuesdfJMMQUw/viewform?embedded=true" width="640" height="688" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-      <button onclick="closeGuestbookModal()" style="
-  margin-top: 1rem;
-  background-color: #2e3a59;
-  color: white;
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-">🔙 Back to Site</button>
-    </div>
-  </div>
+   <div style="text-align: center; margin-top: 2rem;">
+  <h2 style="color: #2e3a59; margin-top: 0;">📨 Leave a Message</h2>
+
+  <p style="max-width: 640px; margin: 0 auto 1rem auto; color: #444;">
+    We invite you to share your memories, blessings, and tributes in honor of <strong>Retired Senior Chief James Nyanaro Nyabaro</strong>. 
+    Whether you knew him personally or were touched by his legacy, your words will continue to inspire and uplift his family and the community.
+  </p>
+
+  <iframe 
+    src="https://docs.google.com/forms/d/e/1FAIpQLScrh5q2KSX8i2DvHufnWovMEq-ApbWYpj8cQAMuesdfJMMQUw/viewform?embedded=true" 
+    width="640" 
+    height="688" 
+    frameborder="0" 
+    marginheight="0" 
+    marginwidth="0"
+    style="border: 1px solid #ccc; border-radius: 10px;"
+  >
+    Loading…
+  </iframe>
+
+  <button 
+    onclick="closeGuestbookModal()" 
+    style="margin-top: 1rem; padding: 0.75rem 1.5rem; background-color: #2e3a59; color: white; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer;"
+  >
+    Close Guest Book
+  </button>
+
+  <p style="margin-top: 0.5rem; font-style: italic; color: #555;">
+    Thank you for sharing your thoughts. Your message adds to the legacy of love, service, and leadership left by a true hero.
+  </p>
+</div>
+
+
+  <button 
+    onclick="closeGuestbookModal()" 
+    style="margin-top: 1rem; padding: 0.75rem 1.5rem; background-color: #2e3a59; color: white; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer;"
+  >
+    Close Guest Book
+  </button>
+
+  <p style="margin-top: 0.5rem; font-style: italic; color: #555;">
+    Thank you for sharing your heartfelt message. Each word helps honor a truly remarkable life.
+  </p>
+</div>
 
   <!-- Guestbook Trigger Button -->
   <button onclick="openGuestbookModal()" 
