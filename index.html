@@ -512,40 +512,64 @@ body::after {
     Your browser does not support the audio element.
   </audio>
   <!-- Welcome Popup -->
-  <div id="welcome-popup" style="
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: #2e3a59;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 1.5rem;
-    text-align: center;
-    z-index: 3000;
-    opacity: 0;
-    transition: opacity 1s ease;
-  ">
-    <div style="animation: fadeUp 1.5s ease-out;">
-      <p style="margin-bottom: 1rem; font-size: 1.3rem;">Welcome to the Legacy of <br><strong>Senior Chief James Nyanaro Nyabaro</strong></p>
-      <p style="font-size: 1rem; font-style: italic; color: #dcdcdc; margin-bottom: 2rem;">
-        “The greatest among you will be your servant.” – Matthew 23:11
-      </p>
-      <button onclick="closeWelcomePopup()" style="
-        padding: 0.6rem 1.2rem;
-        font-size: 1rem;
-        background: white;
-        color: #2e3a59;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      ">Enter Site</button>
-    </div>
+<div id="welcome-popup" style="
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(to bottom right, #2e3a59, #3f4a6b);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  z-index: 3000;
+  opacity: 0;
+  transition: opacity 1s ease;
+  padding: 20px;
+">
+  <div style="animation: fadeUp 1.5s ease-out;">
+    <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: #ffffff;">
+      Welcome to the Legacy of<br>
+      <strong style="color: #ffd700;">Senior Chief James Nyanaro Nyabaro</strong>
+    </h1>
+
+    <p style="font-size: 1.1rem; font-style: italic; color: #dcdcdc; margin-bottom: 2rem;">
+      “The greatest among you will be your servant.” – <em>Matthew 23:11</em>
+    </p>
+
+    <button onclick="closeWelcomePopup()" style="
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      background: #ffd700;
+      color: #2e3a59;
+      border: none;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      transition: background 0.3s ease;
+    " onmouseover="this.style.background='#ffcd00'" onmouseout="this.style.background='#ffd700'">
+      ✨ Enter Site
+    </button>
   </div>
+</div>
+
+<!-- Optional Fade Animation -->
+<style>
+  @keyframes fadeUp {
+    from {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+</style>
+
 
   <!-- Header and Navigation -->
   <header>
@@ -1714,20 +1738,14 @@ window.addEventListener("load", () => {
     setTimeout(() => {
       popup.style.display = "none";
     }, 800);
-  }, 9000); // Popup stays for 5 seconds
+  }, 10000); // Popup stays for 5 seconds
 });
 window.addEventListener("load", () => {
   const popup = document.getElementById("welcome-popup");
   popup.style.opacity = 1;
 });
 
-function closeWelcomePopup() {
-  const popup = document.getElementById("welcome-popup");
-  popup.style.opacity = 0;
-  setTimeout(() => {
-    popup.style.display = "none";
-  }, 9000); // matches transition time
-}
+
 function closeWelcomePopup() {
   const popup = document.getElementById("welcome-popup");
   popup.style.opacity = 0;
