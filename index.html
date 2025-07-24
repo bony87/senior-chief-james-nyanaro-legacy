@@ -467,6 +467,20 @@ body::after {
 .fade-in {
   animation: fadeInSoft 1.2s ease-out;
 }
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+}
 
   </style>
 </head>
@@ -638,10 +652,14 @@ body::after {
       <a onclick="simulatePageLoad(() => showSection('video'))">🎥 Video</a>
       <a onclick="simulatePageLoad(() => showSection('guestbook'))">🖊 Guestbook</a>
       <a onclick="simulatePageLoad(() => showSection('admin'))">🔒 Admin</a>
+      <a onclick="simulatePageLoad(() => showSection('systemInstructions'))">📘 System Instructions</a>
+
 
     </nav>
   </header>
   <!-- Main Content Sections -->
+  
+
   <section id="home" class="active">
   <h2 style="color: #2e3a59; border-bottom: 2px solid #ccc; padding-bottom: 0.5rem;">home</h2>
 
@@ -788,15 +806,15 @@ body::after {
   <p>Mary has been my unwavering companion through every chapter of life. Together, we were blessed with <strong>nine incredible children</strong>, each a gift and a light to our home:</p>
 
   <ul style="padding-left: 1.5rem;">
-    <li><strong>Mercyline Moraa</strong> (born 1965)</li>
-    <li><strong>Stella Mosinya</strong> (1967)</li>
-    <li><strong>Kevin Bundi</strong> (1968)</li>
-    <li><strong>Jane Kerubo</strong> (1972)</li>
-    <li><strong> Rovert Kebaso</strong> (1974)</li>
-    <li><strong>Pius Chelluget</strong> (1976)</li>
-    <li><strong>Lillian Bosibori</strong> (1978)</li>
-    <li><strong>Collette Kerubo</strong> (1980)</li>
-    <li><strong>Geoffrey Samusi</strong> (1982)</li>
+    <li><strong>Mercyline Moraa</strong></li>
+    <li><strong>Stella Mosinya</strong></li>
+    <li><strong>Kevin Bundi</strong> </li>
+    <li><strong>Jane Kerubo</strong></li>
+    <li><strong> Rovert Kebaso</strong></li>
+    <li><strong>Pius Chelluget</strong></li>
+    <li><strong>Lillian Bosibori</strong></li>
+    <li><strong>Collette Kerubo</strong></li>
+    <li><strong>Geoffrey Samusi</strong></li>
   </ul>
 
   <p>They are not only my children but also my strength, my joy, and my legacy. Their support through every stage of my journey has been steadfast and humbling. As a family, we have held hands through both challenges and triumphs — always guided by faith and love.</p>
@@ -1033,7 +1051,7 @@ We love you, we honor you, and we thank you.
 
     <div class="attribute-box">
       <div class="attribute-icon">🙏</div>
-      <div class="attribute-text"><strong>Faithful Servant of God:</strong> His life was rooted in Seventh-day Adventist values, prayer, and daily devotion.</div>
+      <div class="attribute-text"><strong>Faithful Servant of God:</strong> His life was rooted in Catholic church values, prayer, and daily devotion.</div>
     </div>
 
     <div class="attribute-box">
@@ -1078,7 +1096,7 @@ We love you, we honor you, and we thank you.
 
     <div class="attribute-box">
       <div class="attribute-icon">🛐</div>
-      <div class="attribute-text"><strong>Church Elder:</strong> A respected voice in the SDA Church, he led spiritual efforts and built worship centers across Kisii.</div>
+      <div class="attribute-text"><strong>Church Elder:</strong> A respected voice in the Catholic Church, he led spiritual efforts and built christian worship centers across Kisii.</div>
     </div>
 
     <div class="attribute-box">
@@ -1176,7 +1194,13 @@ We love you, we honor you, and we thank you.
 
   <section id="video">
     <h2>Video Tribute</h2>
-    <iframe id="video-frame" width="560" height="315" src="https://www.youtube.com/embed/YourVideoID" frameborder="0" allowfullscreen></iframe>
+    <div class="video-container">
+  <iframe id="video-frame"
+          src="https://www.youtube.com/embed/YourVideoID"
+          frameborder="0"
+          allowfullscreen></iframe>
+</div>
+
   </section>
   <section id="admin">
     <div id="admin-login">
@@ -1304,8 +1328,7 @@ We love you, we honor you, and we thank you.
       font-size: 1.2rem;
     ">❌</span>
   </div>
-
-  <!-- Guestbook Modal -->
+<!-- Guestbook Modal -->
   <div id="guestbook-modal" style="
     display: none;
     position: fixed;
@@ -1319,7 +1342,7 @@ We love you, we honor you, and we thank you.
     
       
    <div style="text-align: center; margin-top: 2rem;">
-  <h2 style="color: #2e3a59; margin-top: 0;">📨 Leave a Message</h2>
+  <h2 style="color: #2e3a59; margin-top: 0;">📨 Leave a Message(includes image appload)</h2>
 
   <p style="max-width: 640px; margin: 0 auto 1rem auto; color: #444;">
     We invite you to share your memories, blessings, and tributes in honor of <strong>Retired Senior Chief James Nyanaro Nyabaro</strong>. 
@@ -1362,15 +1385,91 @@ We love you, we honor you, and we thank you.
     Thank you for sharing your heartfelt message. Each word helps honor a truly remarkable life.
   </p>
 </div>
-
+  
   <!-- Guestbook Trigger Button -->
   <button onclick="openGuestbookModal()" 
           style="padding: 0.7rem 1.2rem; background-color: #1976d2; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
-    📨 Leave a Message
-  </button>
+    📨 Leave a Message(includes image appload)
+    </button>
+      <!-- Button 2: Formspree Popup -->
+  <!-- Open Direct Formspree Form -->
+      <button onclick="openFormspreeModal()" 
+               style="padding: 0.7rem 1.2rem; background-color: #1976d2; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+        📨 Send a Direct Message (Popup no image appload on this section)
+      </button>
+
+  
+
+
+    
+    <!-- Formspree Direct Message Modal -->
+<div id="formspree-modal" style="display: none; position: fixed; top: 0; left: 0; 
+     width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; 
+     justify-content: center; align-items: center;">
+
+  <div style="background: white; padding: 2rem; border-radius: 12px; max-width: 500px; width: 90%; position: relative;">
+
+    <button onclick="closeFormspreeModal()" 
+            style="position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer;">
+      ×
+    </button>
+
+    <h2 style="margin-top: 0; color: #2e3a59;">Send a Direct Tribute</h2>
+
+    <form action="https://formspree.io/f/mgvzagjz" method="POST"> 
+      <label for="name">Your Name:</label><br>
+      <input type="text" name="name" required style="width: 100%; padding: 0.5rem;"><br><br>
+
+      <label for="relationship">Your Relationship to Chief James Nyanaro:</label><br>
+      <input type="text" name="relationship" required style="width: 100%; padding: 0.5rem;"><br><br>
+
+      <label for="message">Your Tribute:</label><br>
+      <textarea name="message" rows="5" required style="width: 100%; padding: 0.5rem;"></textarea><br><br>
+
+      <button type="submit" 
+              style="background-color: #1976d2; color: white; padding: 0.6rem 1.2rem; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+        Send Tribute
+      </button>
+      <!-- Cancel Button -->
+<button type="button" onclick="closeFormspreeModal()" 
+        style="margin-top: 0.5rem; background-color: #ccc; color: black; padding: 0.6rem 1.2rem; border: none; border-radius: 5px; font-weight: normal; cursor: pointer;">
+  Cancel
+</button>
+      <input type="hidden" name="_next" value="https://your-site.com/thank-you.html">
+    </form>
+  </div>
+</div>
+
+
+<section id="systemInstructions" >
+  <h2>📘 How to Use This Tribute Site</h2>
+
+  <p>Welcome to the digital memorial site for <strong>Senior Chief James Nyanaro Nyabaro</strong>.</p>
+
+  <p>This platform is here to celebrate his legacy and give family, friends, and community members a space to share their thoughts, stories, and messages.</p>
+
+  <h3>💬 How You Can Participate:</h3>
+  <ul>
+    <li><strong>📝 Leave a Tribute:</strong> Submit a message through the Google Form (scroll down or use the Guestbook menu).</li>
+    <li><strong>📨 Leave a Message:</strong> Use the message page or section to share thoughts.</li>
+    <li><strong>📩 Send a Direct Message (Popup):</strong> Use the popup form to send a quick tribute with your name and relationship.</li>
+  </ul>
+
+  <h3>🌍 Who Can Contribute?</h3>
+  <p>This platform is open to anyone whose life has been influenced by Chief Nyanaro — including family, friends, neighbors, colleagues, and community members who continue to benefit from his work and legacy..</p>
+
+  <h3>📷 Want to Share Media?</h3>
+  <p>If you have photos or videos you'd like added, please email them to: <a href="mailto:Bonychelly@gmail.com?subject=Photo Submission for Chief Nyanaro">Bonychelly@gmail.com</a>
+</p>
+
+  <p style="margin-top: 2rem;"><em>Thank you for being part of this celebration. Your voice contributes to honoring and preserving the ongoing legacy of Senior Chief James Nyanaro.</em></p>
+
+</section>
+
+
 
 <marquee behavior="scroll" direction="left" scrollamount="4">
-    This is a history of Retired Senior Chief James Nyanaro — a man whose life embodied service, leadership, and love.
+    This is a history of Retired Senior Chief James Nyanaro Nyabaro — a man whose life embodied service, leadership, and love.
     From building schools and hospitals to guiding his community with wisdom, he left behind a legacy that continues to inspire.
   </marquee>
   <!-- Footer -->
@@ -1920,15 +2019,7 @@ function openUploadWidget() {
     }
   });
 }
-function openGuestbookModal() {
-  const modal = document.getElementById("guestbook-modal");
-  modal.style.display = "flex";
-}
 
-function closeGuestbookModal() {
-  const modal = document.getElementById("guestbook-modal");
-  modal.style.display = "none";
-}
 
   document.addEventListener('DOMContentLoaded', function () {
     const boxes = document.querySelectorAll('.attribute-box');
@@ -1948,6 +2039,27 @@ document.getElementById("admin-pass").addEventListener("keydown", function(event
     checkPassword(); // triggers the login function
   }
 });
+
+  function openGuestbookModal() {
+    const modal = document.getElementById('guestbook-modal');
+    if (modal) {
+      modal.style.display = 'flex';
+    }
+  }
+
+  function closeGuestbookModal() {
+    const modal = document.getElementById('guestbook-modal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
+function openFormspreeModal() {
+    document.getElementById('formspree-modal').style.display = 'flex';
+  }
+
+  function closeFormspreeModal() {
+    document.getElementById('formspree-modal').style.display = 'none';
+  }
 
 
 
