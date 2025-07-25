@@ -641,18 +641,64 @@ body::after {
       ✨ Celebrating a Life of Leadership and Legacy ✨
     </marquee>
 
-    <nav>
-      <a onclick="simulatePageLoad(() => showSection('home'))">🏠 Home</a>
-      <a onclick="simulatePageLoad(() => showSection('biography'))">📖 Biography</a>
-      <a onclick="simulatePageLoad(() => showSection('achievements'))">🏅 Achievements</a>
-      <a onclick="simulatePageLoad(() => showSection('full-history'))">📜 Full History</a>
-      <a onclick="simulatePageLoad(() => showSection('tributes'))">💬 Tributes</a>
-      <a onclick="simulatePageLoad(() => showSection('attributes'))">💫 Attributes</a>
-      <a onclick="simulatePageLoad(() => showSection('gallery'))">💫 Gallery</a>
-      <a onclick="simulatePageLoad(() => showSection('video'))">🎥 Video</a>
-      <a onclick="simulatePageLoad(() => showSection('guestbook'))">🖊 Guestbook</a>
-      <a onclick="simulatePageLoad(() => showSection('admin'))">🔒 Admin</a>
-      <a onclick="simulatePageLoad(() => showSection('systemInstructions'))">📘 System Instructions</a>
+    <nav id="mainNav" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; background-color: #f2f2f2; padding: 1rem; border-radius: 10px;">
+
+  <!-- Always visible Home button -->
+  <a onclick="showOnlyHome()" 
+     style="flex: 1 1 150px; background-color: #1976d2; color: white; padding: 0.8rem; text-align: center; border-radius: 6px; text-decoration: none; font-weight: bold;">
+    🏠 Home
+  </a>
+
+  <!-- Other buttons inside a toggleable container -->
+  <div id="navButtons" style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;">
+
+    <a onclick="simulatePageLoad(() => showSectionWithNavControl('biography'))"
+       style="flex: 1 1 150px; background-color: #00796b; color: white; padding: 0.8rem; text-align: center; border-radius: 6px; text-decoration: none; font-weight: bold;">
+      📖 Biography
+    </a>
+
+    <a onclick="simulatePageLoad(() => showSectionWithNavControl('achievements'))"
+       style="flex: 1 1 150px; background-color: #388e3c; color: white; padding: 0.8rem; text-align: center; border-radius: 6px; text-decoration: none; font-weight: bold;">
+      🏅 Achievements
+    </a>
+
+    <a onclick="simulatePageLoad(() => showSectionWithNavControl('full-history'))"
+       style="flex: 1 1 100%; background-color: #4a148c; color: white; padding: 1.2rem; text-align: center; border-radius: 8px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 1.1rem;">
+      📜 Full History – The Legacy Journey
+    </a>
+
+    <a onclick="simulatePageLoad(() => showSectionWithNavControl('attributes'))"
+       style="flex: 1 1 150px; background-color: #f57c00; color: white; padding: 0.8rem; text-align: center; border-radius: 6px; text-decoration: none; font-weight: bold;">
+      🌟 Attributes
+    </a>
+
+    <a onclick="simulatePageLoad(() => showSectionWithNavControl('gallery'))"
+       style="flex: 1 1 150px; background-color: #5d4037; color: white; padding: 0.8rem; text-align: center; border-radius: 6px; text-decoration: none; font-weight: bold;">
+      🖼 Gallery
+    </a>
+
+    <a onclick="simulatePageLoad(() => showSectionWithNavControl('video'))"
+       style="flex: 1 1 150px; background-color: #c62828; color: white; padding: 0.8rem; text-align: center; border-radius: 6px; text-decoration: none; font-weight: bold;">
+      🎥 Video
+    </a>
+
+    <a onclick="simulatePageLoad(() => showSectionWithNavControl('guestbook'))"
+       style="flex: 1 1 150px; background-color: #455a64; color: white; padding: 0.8rem; text-align: center; border-radius: 6px; text-decoration: none; font-weight: bold;">
+      🖊 Guestbook
+    </a>
+
+    <a onclick="simulatePageLoad(() => showSectionWithNavControl('admin'))"
+       style="flex: 1 1 150px; background-color: #212121; color: white; padding: 0.8rem; text-align: center; border-radius: 6px; text-decoration: none; font-weight: bold;">
+      🔒 Admin
+    </a>
+
+    <a onclick="simulatePageLoad(() => showSectionWithNavControl('systemInstructions'))"
+       style="flex: 1 1 150px; background-color: #0288d1; color: white; padding: 0.8rem; text-align: center; border-radius: 6px; text-decoration: none; font-weight: bold;">
+      📘 System Instructions
+    </a>
+
+  </div>
+</nav>
 
 
     </nav>
@@ -893,8 +939,8 @@ body::after {
       <a href="https://github.com/bony87/nyanaro-assets/blob/main/CHIEF%20JAMES%20AS%20A%20CHIEF.jpg?raw=true" target="_blank" download>
         <img src="https://github.com/bony87/nyanaro-assets/blob/main/CHIEF%20JAMES%20AS%20A%20CHIEF.jpg?raw=true" alt="School Visit">
       </a>
-      <p>" 📅 Appointed Chief – 1968"
-       In 1968, James Nyanaro was entrusted with the mantle of local chief — a role that would come to define decades of service, peacebuilding, and transformative leadership.  
+      <p>" 📅 Appointed Chief – 26th February 1976 "
+       In 1976, James Nyanaro was entrusted with the mantle of local chief — a role that would come to define decades of service, peacebuilding, and transformative leadership.  
   His appointment marked the beginning of a life lived not for self, but for community — guided always by faith, wisdom, and the sacred duty to serve. .</p>
     </div>
     <div class="gallery-item">
@@ -1235,6 +1281,10 @@ We love you, we honor you, and we thank you.
         <button onclick="showEditSection('admin-guestbook-responses')">View Guestbook Responses</button>
         <button onclick="openUploadWidget()">Upload Image</button>
       </div>
+ <a href="https://formspree.io/forms/mgvzagjz/submissions" target="_blank"
+   style="padding: 0.7rem 1.2rem; background-color: #212121; color: white; border: none; border-radius: 6px; font-weight: bold; text-decoration: none;">
+  📥 View Direct Messages
+</a>
 
       <!-- Biography Editor -->
       <div id="edit-biography" class="admin-section" style="display:none;">
@@ -1270,21 +1320,28 @@ We love you, we honor you, and we thank you.
       </div>
     </div>
   </section>
-
-  <section id="full-history">
+<section id="full-history">
     <h2>Full History of Chief James Nyanaro Nyabaro</h2>
     <p>
       📂 <a href="https://github.com/bony87/senior-chief-james-nyanaro-legacy/blob/main/RETIRED%20SENIOR%20CHIEF%20JAMES%20NYANARO!.pdf?raw=true" 
            download 
            target="_blank" 
-           onclick="showDownloadMessage()" 
+           
+            onclick="showDownloadMessage(event)" 
            class="download-button">
            📥 Download Full History (PDF)
       </a>
       <button onclick="showGuestbook()" class="button" style="background-color: #1976d2;">📨 Leave a Message</button>
     </p>
 
-    <button onclick="window.print()" class="button" style="background-color: #455a64;">🖨️ Print This Page</button>
+
+
+    <button onclick="alert('You are now viewing this page.')" 
+        class="button" 
+        style="background-color: #455a64; color: white; padding: 0.8rem 1.2rem; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+  👁️ View This Page
+</button>
+
 
     <hr style="margin: 2rem 0;">
 
@@ -1458,7 +1515,8 @@ We love you, we honor you, and we thank you.
 <section id="systemInstructions" >
   <h2>📘 How to Use This Tribute Site</h2>
 
-  <p>Welcome to the digital memorial site for <strong>Senior Chief James Nyanaro Nyabaro</strong>.</p>
+  <p>Welcome to the official tribute site for <strong>Senior Chief James Nyanaro Nyabaro</strong> — a celebration of his life, leadership, and lasting contributions to community and country.
+</strong>.</p>
 
   <p>This platform is here to celebrate his legacy and give family, friends, and community members a space to share their thoughts, stories, and messages.</p>
 
@@ -2074,6 +2132,18 @@ function openFormspreeModal() {
   function closeFormspreeModal() {
     document.getElementById('formspree-modal').style.display = 'none';
   }
+
+  function showDownloadMessage(event) {
+    event.preventDefault(); // Prevent auto-download until message is shown
+
+    const proceed = confirm("📖 After reading the full history, we invite you to leave your tribute.\nWould you like to continue downloading?");
+    
+    if (proceed) {
+      // Simulate manual download after user confirms
+      window.open(event.currentTarget.href, '_blank');
+    }
+  }
+
 
 
 
