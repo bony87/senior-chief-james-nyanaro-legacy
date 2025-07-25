@@ -641,7 +641,7 @@ body::after {
       ✨ Celebrating a Life of Leadership and Legacy ✨
     </marquee>
 
-    <nav id="mainNav" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; background-color: #f2f2f2; padding: 1rem; border-radius: 10px;">
+  <nav id="mainNav" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; background-color: #f2f2f2; padding: 1rem; border-radius: 10px;">
 
   <!-- Always visible Home button -->
   <a onclick="showOnlyHome()" 
@@ -701,7 +701,8 @@ body::after {
 </nav>
 
 
-    </nav>
+
+    
   </header>
   <!-- Main Content Sections -->
   
@@ -2143,7 +2144,15 @@ function openFormspreeModal() {
       window.open(event.currentTarget.href, '_blank');
     }
   }
+function showSectionWithNavControl(sectionId) {
+    showSection(sectionId);
+    document.getElementById("navButtons").style.display = "none"; // hide other buttons
+  }
 
+  function showOnlyHome() {
+    showSection('home');
+    document.getElementById("navButtons").style.display = "flex"; // show all buttons again
+  }
 
 
 
