@@ -485,6 +485,7 @@ body::after {
   </style>
 </head>
 <body>
+  
 <button onclick="showSection('home')" 
         style="position: fixed; bottom: 20px; left: 20px; background-color: #2e3a59; color: white; border: none; padding: 0.8rem 1.2rem; border-radius: 8px; font-weight: bold; z-index: 999;">
   🔙 Back to Home
@@ -543,19 +544,24 @@ body::after {
   transition: opacity 1s ease;
   padding: 20px;
 ">
-  <div style="animation: fadeUp 1.5s ease-out;">
-    <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: #ffffff;">
-      Welcome to the Legacy of<br>
-      <strong style="color: #ffd700;">Senior Chief James Nyanaro Nyabaro</strong>
-    </h1>
+  <div style="animation: fadeUp 1.5s ease-out; text-align: center; padding: 2rem;">
+  <img src="https://github.com/bony87/nyanaro-assets/blob/main/CHIEF%20JAMES%20NYANARO.JPG?raw=true" 
+       alt="Chief James Nyanaro" 
+       style="max-width: 200px; border-radius: 10px; margin-bottom: 1.5rem; box-shadow: 0 0 10px rgba(0,0,0,0.4);">
+  
+  <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: #ffffff;">
+    Welcome to the Legacy of<br>
+    <strong style="color: #ffd700;">Senior Chief James Nyanaro Nyabaro</strong>
+  </h1>
 
-    <p style="font-size: 1.1rem; font-style: italic; color: #dcdcdc; margin-bottom: 2rem;">
-      “The greatest among you will be your servant.” – <em>Matthew 23:11</em>
-    </p>
+  <p style="font-size: 1.1rem; font-style: italic; color: #dcdcdc; margin-bottom: 2rem;">
+    “The greatest among you will be your servant.” – <em>Matthew 23:11</em>
+  </p>
 
-    <p style="color: #f0f0f0; font-size: 1rem; margin-bottom: 1rem;">
-     👇 Click here to enter the site
-    </p>
+  <p style="color: #f0f0f0; font-size: 1rem; margin-bottom: 1rem;">
+    👇 Click here to enter the site
+  </p>
+
 
     <button onclick="closeWelcomePopup()" style="
       padding: 0.75rem 2rem;
@@ -2211,7 +2217,6 @@ function showSectionWithNavControl(sectionId) {
     showSection('home');
     document.getElementById("navButtons").style.display = "flex"; // show all buttons again
   }
-
 
 
   </script>
